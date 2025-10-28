@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Package, ShoppingCart, DollarSign, Users, AlertTriangle, TrendingUp } from 'lucide-react';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar, Tooltip } from 'recharts';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="date" />
                   <YAxis />
-                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Tooltip content={<ChartTooltipContent />} />
                   <Line
                     type="monotone"
                     dataKey="sales"
@@ -221,7 +221,7 @@ export default function AdminDashboard() {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
-                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Tooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="sales" fill="var(--color-sales)" />
                 </BarChart>
               </ResponsiveContainer>
