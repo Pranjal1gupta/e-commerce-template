@@ -46,12 +46,30 @@ export interface Product {
   threshold?: number;
   created_at: string;
   updated_at: string;
+  // Additional fields for enhanced product detail
+  title?: string;
+  category?: string;
+  subcategory?: string;
+  price?: number;
+  discountPercentage?: number;
+  highlights?: string[];
+  reviews?: {
+    user: string;
+    rating: number;
+    comment: string;
+    date: string;
+    image?: string;
+  }[];
+  offers?: string[];
+  stock?: number;
+  codAvailable?: boolean;
+  returnPolicy?: string;
 }
 
 export interface Offer {
   id: string;
   title: string;
-  description: string;
+  description: string;    
   type: string;
   discount_type: string;
   discount_value: number;

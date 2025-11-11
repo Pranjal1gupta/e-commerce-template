@@ -1,8 +1,16 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, dummyData } from './dummy-data';
 import { useRouter } from 'next/navigation';
+
+type User = {
+  id: string;
+  email: string;
+  full_name: string | null;
+  avatar_url: string | null;
+  phone: string | null;
+  is_admin: boolean;
+};
 
 type Profile = {
   id: string;
@@ -34,8 +42,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Check for stored user session
-    const storedUser = localStorage.getItem('dummy_user');
-    const storedProfile = localStorage.getItem('dummy_profile');
+    const storedUser = localStorage.getItem('user');
+    const storedProfile = localStorage.getItem('profile');
 
     if (storedUser && storedProfile) {
       setUser(JSON.parse(storedUser));
@@ -46,77 +54,73 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      // Dummy authentication - find user by email
-      const allUsers = await dummyData.getUsers();
-      const user = allUsers.find(u => u.email === email);
-      
-      if (user) {
-        setUser(user);
-        setProfile({
-          id: user.id,
-          email: user.email,
-          full_name: user.full_name,
-          avatar_url: user.avatar_url,
-          phone: user.phone,
-          is_admin: user.is_admin,
-        });
-        localStorage.setItem('dummy_user', JSON.stringify(user));
-        localStorage.setItem('dummy_profile', JSON.stringify({
-          id: user.id,
-          email: user.email,
-          full_name: user.full_name,
-          avatar_url: user.avatar_url,
-          phone: user.phone,
-          is_admin: user.is_admin,
-        }));
-        return { error: null };
+      console.log('Attempting to sign in with email:', email);
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      console.log('Login response status:', response.status);
+      const data = await response.json();
+      console.log('Login response data:', data);
+
+      if (!response.ok) {
+        console.error('Login error:', data.error);
+        return { error: data.error || 'Failed to sign in' };
       }
-      return { error: 'User not found' };
-    } catch (error) {
-      return { error: 'Authentication failed' };
+
+      setUser(data);
+      setProfile(data);
+      localStorage.setItem('user', JSON.stringify(data));
+      localStorage.setItem('profile', JSON.stringify(data));
+      console.log('User logged in successfully');
+      return { error: null };
+    } catch (error: any) {
+      console.error('Sign in exception:', error);
+      return { error: error.message || 'Authentication failed' };
     }
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      const newUser = await dummyData.createUser({
-        email,
-        full_name: fullName,
-        avatar_url: null,
-        phone: null,
-        is_admin: false,
-        is_active: true,
+      console.log('Attempting to sign up with email:', email);
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, full_name: fullName }),
       });
 
-      setUser(newUser);
-      setProfile({
-        id: newUser.id,
-        email: newUser.email,
-        full_name: newUser.full_name,
-        avatar_url: newUser.avatar_url,
-        phone: newUser.phone,
-        is_admin: newUser.is_admin,
-      });
-      localStorage.setItem('dummy_user', JSON.stringify(newUser));
-      localStorage.setItem('dummy_profile', JSON.stringify({
-        id: newUser.id,
-        email: newUser.email,
-        full_name: newUser.full_name,
-        avatar_url: newUser.avatar_url,
-        phone: newUser.phone,
-        is_admin: newUser.is_admin,
-      }));
+      console.log('Signup response status:', response.status);
+      const data = await response.json();
+      console.log('Signup response data:', data);
+
+      if (!response.ok) {
+        console.error('Signup error:', data.error);
+        return { error: data.error || 'Failed to create account' };
+      }
+
+      setUser(data);
+      setProfile(data);
+      localStorage.setItem('user', JSON.stringify(data));
+      localStorage.setItem('profile', JSON.stringify(data));
+      console.log('User signed up successfully');
       return { error: null };
-    } catch (error) {
-      return { error: 'Registration failed' };
+    } catch (error: any) {
+      console.error('Sign up exception:', error);
+      return { error: error.message || 'Registration failed' };
     }
   };
 
   const signOut = async () => {
     setUser(null);
     setProfile(null);
-    localStorage.removeItem('dummy_user');
-    localStorage.removeItem('dummy_profile');
+    localStorage.removeItem('user');
+    localStorage.removeItem('profile');
     router.push('/');
   };
 

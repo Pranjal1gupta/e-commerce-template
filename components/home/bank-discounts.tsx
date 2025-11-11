@@ -70,13 +70,11 @@ const bankDiscounts: BankDiscount[] = [
 
 export default function BankDiscounts() {
   const [current, setCurrent] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const nextTimer = setInterval(() => {
       setCurrent(prev => (prev + 1) % bankDiscounts.length);
-      setIsFlipped(false);
     }, 6000);
 
     return () => clearInterval(nextTimer);
@@ -118,12 +116,11 @@ export default function BankDiscounts() {
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          onClick={() => setIsFlipped(!isFlipped)}
-          className="w-full max-w-4xl cursor-pointer perspective-1000"
+          
+          className="w-full max-w-4xl perspective-1000"
         >
           <motion.div
-            animate={{ rotateY: isFlipped ? 180 : 0 }}
-            transition={{ duration: 0.6, ease: 'easeInOut' }}
+            
             className="relative h-64 transform-style-preserve-3d"
           >
             {/* Front - Coupon Display */}
@@ -200,7 +197,7 @@ export default function BankDiscounts() {
                   </p>
                   
                   <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border-2 border-dashed border-white/40 hover:border-white/60 transition-all">
-                    <p className={`text-white text-4xl font-black tracking-wider font-mono mb-4 transition-all ${!isFlipped ? 'blur-sm' : ''}`} style={{ transform: 'scaleX(-1)' }}>
+                    <p className="text-white text-4xl font-black tracking-wider font-mono mb-4 transition-all" style={{ transform: 'scaleX(-1)' }}>
                       {bank.couponCode}
                     </p>
                     <button
@@ -240,13 +237,13 @@ export default function BankDiscounts() {
         </motion.div>
 
         {/* Click Hint */}
-        <motion.p
+        {/* <motion.p
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 2, repeat: Infinity }}
           className="text-gray-500 dark:text-gray-400 text-sm mt-8 text-center"
         >
           💡 Click the card to reveal coupon code
-        </motion.p>
+        </motion.p> */}
 
         {/* Navigation Dots */}
         <div className="flex gap-3 mt-12">
@@ -255,7 +252,6 @@ export default function BankDiscounts() {
               key={i}
               onClick={() => {
                 setCurrent(i);
-                setIsFlipped(false);
               }}
               className={`transition-all duration-300 rounded-full ${
                 i === current

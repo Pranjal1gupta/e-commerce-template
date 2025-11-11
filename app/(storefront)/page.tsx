@@ -63,7 +63,7 @@ export default async function HomePage() {
     <div className="min-h-screen">
       <HeroSection offers={data.offers} />
       <TrustIndicators />
-      <BankDiscounts />
+      {/* <BankDiscounts /> */}
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 py-16">
