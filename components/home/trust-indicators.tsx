@@ -47,17 +47,19 @@ export function TrustIndicators() {
   return (
     <div className="bg-white py-10 border-b">
       <div className="container mx-auto px-6 md:px-8">
-        <div className="flex justify-center items-center gap-6 md:gap-8 lg:gap-10 overflow-x-auto">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-4 lg:flex lg:justify-center lg:items-center lg:gap-10 lg:overflow-x-auto">
           {indicators.map((indicator, index) => (
-            <div key={index} className="flex flex-col items-center text-center flex-shrink-0 px-2">
+            <div key={index} className="flex flex-col items-center text-center lg:flex-shrink-0 lg:px-2">
               <indicator.icon className="h-8 w-8 text-blue-600 mb-2" />
               <span className="text-xs md:text-sm font-medium text-gray-700 whitespace-pre-line leading-tight">
                 {indicator.text}
               </span>
             </div>
           ))}
+
         </div>
       </div>
     </div>
   );
+
 }

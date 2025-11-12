@@ -68,7 +68,7 @@ export function HotDeals() {
           <Carousel>
             <CarouselContent>
               {[...Array(8)].map((_, i) => (
-                <CarouselItem key={i} className="basis-1/2 md:basis-1/3 lg:basis-1/4">
+                <CarouselItem key={i} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                   <Skeleton className="h-[250px]" />
                 </CarouselItem>
               ))}
@@ -122,7 +122,7 @@ export function HotDeals() {
         >
           <CarouselContent className="">
             {products.map((product) => (
-              <CarouselItem key={product.id} className="basis-1/2 md:basis-2/5 lg:basis-1/4">
+              <CarouselItem key={product.id} className="basis-full sm:basis-1/2 md:basis-2/5 lg:basis-1/4">
                 <div className="relative group">
                   <ProductCard product={product} />
                 </div>
